@@ -9,7 +9,12 @@ import Foundation
 
 extension NSObject {
     public func observe<T>(for observable: Observable<T>, with: @escaping (T) -> ()) {
-        observable.bind { observable, value  in
+        if let val = observable.value {
+            DispatchQueue.main.async {
+                with(val)
+            }
+        }
+        observable.bind { observable, value in
             DispatchQueue.main.async {
                 with(value)
             }
